@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    input[type="text"] {
+      width: 300px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Certify</h2>
+  <p>Event ID: <input id="eventID" /></p>
+  <button id="generate">Generate</button>
+  <button id="cancel">Cancel</button>
+  <button id="settings">Settings</button>
+
+  <div id="settingsPage" style="display: none;">
+    <h3>Settings</h3>
+    <p>API Server URL: <input id="apiUrl" /></p>
+    <button id="saveSettings">Save</button>
+  </div>
+
+  <script>
+    // Retrieve the saved API Server URL from the plugin
+    parent.postMessage({ pluginMessage: { type: "get-api-url" } }, "*");
+
+    // Set the initial value of the API Server URL input field
+    window.addEventListener("message", (event) => {
+      const message = event.data.pluginMessage;
+      if (message && message.type === "set-api-url") {
+        document.getElementById("apiUrl").value = message.apiUrl;
+      }
+    });
+
+    document.getElementById("generate").onclick = () => {
+      const textbox = document.getElementById("eventID");
+      const eventID = textbox.value;
+      parent.postMessage(
+        { pluginMessage: { type: "generate-certificate", eventID } },
+        "*"
+      );
+    };
+
+    document.getElementById("cancel").onclick = () => {
+      parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
+    };
+
+    // Show the settings page when the Settings button is clicked
+    document.getElementById("settings").onclick = () => {
+      document.getElementById("settingsPage").style.display = "block";
+    };
+
+    document.getElementById("saveSettings").onclick = () => {
+      const apiUrlTextbox = document.getElementById("apiUrl");
+      const apiUrl = apiUrlTextbox.value;
+
+      parent.postMessage(
+        { pluginMessage: { type: "save-settings", apiUrl } },
+        "*"
+      );
+    };
+  </script>
+</body>
+
+</html>

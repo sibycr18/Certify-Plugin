@@ -1,0 +1,19 @@
+{
+  "name": "Certify Plugin",
+  "id": "1270717490698024044",
+  "api": "1.0.0",
+  "main": "code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma"
+  ],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "*"
+    ],
+    "reasoning": "Needed to allow user to specify api server",
+    "devAllowedDomains": []
+  }
+}
